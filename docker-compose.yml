@@ -1,8 +1,10 @@
-version: '3.4'
+version: "3.5"
 
 services:
-  cache.redis.api:
-    image: ${DOCKER_REGISTRY-}cacheredisapi
-    build:
-      context: .
-      dockerfile: Cache.Redis.Api/Dockerfile
+    redis:
+        container_name: Redis
+        image: "bitnami/redis"
+        environment:
+          - REDIS_PASSWORD=Three@141592653589793
+        ports:
+          - "6379:6379"

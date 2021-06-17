@@ -1,3 +1,4 @@
+using Cache.Redis.Data.Support.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,9 @@ namespace Cache.Redis.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cache.Redis.Api", Version = "v1" });
             });
+
+            services
+                .AddData(Configuration);
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
