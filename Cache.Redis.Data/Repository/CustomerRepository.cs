@@ -34,12 +34,14 @@ namespace Cache.Redis.Data.Repository
 
             var redisValue = await _database.StringGetAsync(key.ToString()).ConfigureAwait(false);
 
-            if (redisValue.HasValue)
-            {
-                return new Customer { Name = redisValue };
-            }
+            return redisValue.HasValue ? new Customer { Name = redisValue } : null;
+        }
 
-            return null;
+        public async Task<bool> KeyDeleteAsync(Guid key, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Entering {nameof(KeyDeleteAsync)}");
+
+            return await _database.KeyDeleteAsync(key.ToString()).ConfigureAwait(false);
         }
     }
 }

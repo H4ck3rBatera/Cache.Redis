@@ -65,9 +65,22 @@ namespace Cache.Redis.Api.Controllers
             }
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
-        //{
-        //}
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> Delete(Guid key, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Entering {nameof(Delete)}");
+
+            try
+            {
+                var result = await _customerService.KeyDeleteAsync(key, cancellationToken);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

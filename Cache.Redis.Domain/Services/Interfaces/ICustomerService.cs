@@ -9,5 +9,6 @@ namespace Cache.Redis.Domain.Services.Interfaces
     {
         Task<bool> StringSetAsync(Customer customer, CancellationToken cancellationToken);
         Task<Customer> StringGetAsync(Guid key, CancellationToken cancellationToken);
+        Task<bool> KeyDeleteAsync(Guid key, CancellationToken cancellationToken);
     }
 }

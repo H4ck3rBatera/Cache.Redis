@@ -30,7 +30,16 @@ namespace Cache.Redis.Domain.Services
 
         public async Task<Customer> StringGetAsync(Guid key, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Entering {nameof(StringGetAsync)}");
+
             return await _customerRepository.StringGetAsync(key, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<bool> KeyDeleteAsync(Guid key, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Entering {nameof(KeyDeleteAsync)}");
+
+            return await _customerRepository.KeyDeleteAsync(key, cancellationToken).ConfigureAwait(false);
         }
     }
 }
