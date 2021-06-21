@@ -10,5 +10,6 @@ namespace Cache.Redis.Domain.Repository
         Task<bool> StringSetAsync(Customer customer, CancellationToken cancellationToken);
         Task<Customer> StringGetAsync(Guid key, CancellationToken cancellationToken);
         Task<bool> KeyDeleteAsync(Guid key, CancellationToken cancellationToken);
+        Task<TimeSpan?> KeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken);
     }
 }

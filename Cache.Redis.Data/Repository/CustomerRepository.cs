@@ -43,5 +43,12 @@ namespace Cache.Redis.Data.Repository
 
             return await _database.KeyDeleteAsync(key.ToString()).ConfigureAwait(false);
         }
+        
+        public async Task<TimeSpan?> KeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Entering {nameof(KeyTimeToLiveAsync)}");
+
+            return await _database.KeyTimeToLiveAsync(key.ToString()).ConfigureAwait(false);
+        }
     }
 }

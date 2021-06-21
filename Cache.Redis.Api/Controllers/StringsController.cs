@@ -26,17 +26,37 @@ namespace Cache.Redis.Api.Controllers
         }
 
         [HttpGet("{key}")]
-        public async Task<IActionResult> Get(Guid key, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync(Guid key, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Entering {nameof(Get)}");
+            _logger.LogInformation($"Entering {nameof(GetAsync)}");
 
             try
             {
                 var customer = await _customerService.StringGetAsync(key, cancellationToken).ConfigureAwait(false);
 
-                var customerViewModel = new CustomerViewModel { Name = customer.Name };
+                if (customer == null) return StatusCode((int)HttpStatusCode.NotFound);
 
+                var customerViewModel = new CustomerViewModel { Name = customer.Name };
                 return Ok(customerViewModel);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet("{key}/KeyTimeToLive")]
+        public async Task<IActionResult> GetKeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Entering {nameof(GetKeyTimeToLiveAsync)}");
+
+            try
+            {
+                var timeSpan = await _customerService.KeyTimeToLiveAsync(key, cancellationToken).ConfigureAwait(false);
+
+                return Ok(timeSpan);
             }
             catch (Exception ex)
             {
@@ -46,9 +66,9 @@ namespace Cache.Redis.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CustomerViewModel customerViewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> PostAsync(CustomerViewModel customerViewModel, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Entering {nameof(Post)}");
+            _logger.LogInformation($"Entering {nameof(PostAsync)}");
 
             var customer = new Customer { Name = customerViewModel.Name };
 
@@ -66,9 +86,9 @@ namespace Cache.Redis.Api.Controllers
         }
 
         [HttpDelete("{key}")]
-        public async Task<IActionResult> Delete(Guid key, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteAsync(Guid key, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Entering {nameof(Delete)}");
+            _logger.LogInformation($"Entering {nameof(DeleteAsync)}");
 
             try
             {
