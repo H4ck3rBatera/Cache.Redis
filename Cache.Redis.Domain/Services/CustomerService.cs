@@ -18,11 +18,11 @@ namespace Cache.Redis.Domain.Services
             _logger = logger;
         }
 
-        public async Task<bool> RegisterAsync(Customer customer, CancellationToken cancellationToken)
+        public async Task<bool> StringSetAsync(Customer customer, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Entering {nameof(RegisterAsync)}");
+            _logger.LogInformation($"Entering {nameof(StringSetAsync)}");
 
-            return await _customerRepository.RegisterAsync(customer, cancellationToken);
+            return await _customerRepository.StringSetAsync(customer, cancellationToken);
         }
     }
 }

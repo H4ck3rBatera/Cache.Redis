@@ -6,6 +6,6 @@ namespace Cache.Redis.Domain.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task<bool> RegisterAsync(Customer customer, CancellationToken cancellationToken);
+        Task<bool> StringSetAsync(Customer customer, CancellationToken cancellationToken);
     }
 }

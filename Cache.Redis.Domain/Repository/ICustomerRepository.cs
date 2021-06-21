@@ -6,6 +6,6 @@ namespace Cache.Redis.Domain.Repository
 {
     public interface ICustomerRepository
     {
-        Task<bool> RegisterAsync(Customer customer, CancellationToken cancellationToken);
+        Task<bool> StringSetAsync(Customer customer, CancellationToken cancellationToken);
     }
 }
