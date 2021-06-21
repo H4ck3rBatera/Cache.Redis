@@ -9,7 +9,7 @@ namespace Cache.Redis.Data.Support.Extensions
         public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetSection("ConnectionStrings:Redis:ConnectionString");
-            services.AddSingleton(serviceProvider => ConnectionMultiplexer.Connect(connectionString.Value));
+            services.AddSingleton<IConnectionMultiplexer>(serviceProvider => ConnectionMultiplexer.Connect(connectionString.Value));
 
             return services;
         }

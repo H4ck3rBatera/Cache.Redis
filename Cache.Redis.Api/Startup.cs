@@ -1,4 +1,5 @@
 using Cache.Redis.Data.Support.Extensions;
+using Cache.Redis.Domain.Support.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace Cache.Redis.Api
             });
 
             services
+                .AddDomain(Configuration)
                 .AddData(Configuration);
         }
         
