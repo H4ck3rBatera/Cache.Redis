@@ -1,5 +1,4 @@
-# Cache.Redis
-Cache Redis
+# Cache Redis
 
 ### Packages
 `<PackageReference Include="StackExchange.Redis" Version="2.2.4" />`
@@ -54,4 +53,38 @@ public class CustomerRepository : ICustomerRepository
             return await _database.KeyTimeToLiveAsync(key.ToString()).ConfigureAwait(false);
         }
     }
+```
+
+### Service Collection Extension
+```csharp
+public static class ServiceCollectionExtension
+    {
+        public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .Configure<RedisOption>(configuration.GetSection("Redis"));
+
+            var connectionString = configuration.GetSection("ConnectionStrings:Redis");
+            services.AddSingleton<IConnectionMultiplexer>(serviceProvider => ConnectionMultiplexer.Connect(connectionString.Value));
+
+            services
+                .AddScoped<ICustomerRepository, CustomerRepository>();
+
+            return services;
+        }
+    }
+```
+
+### docker-compose.yml
+```yaml
+version: "3.5"
+
+services:
+    redis:
+        container_name: Redis
+        image: "bitnami/redis"
+        environment:
+          - REDIS_PASSWORD=Three@141592653589793
+        ports:
+          - "6379:6379"
 ```
