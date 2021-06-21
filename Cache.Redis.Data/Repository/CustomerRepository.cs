@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Cache.Redis.Data.Support.Options;
 using Cache.Redis.Domain.Models;
 using Cache.Redis.Domain.Repository;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace Cache.Redis.Data.Repository
@@ -12,12 +14,15 @@ namespace Cache.Redis.Data.Repository
     {
         private readonly ILogger _logger;
         private readonly IDatabase _database;
+        private readonly RedisOption _redisOption;
 
         public CustomerRepository(
             ILogger<CustomerRepository> logger,
-            IConnectionMultiplexer connectionMultiplexer)
+            IConnectionMultiplexer connectionMultiplexer,
+            IOptions<RedisOption> redisOption)
         {
             _logger = logger;
+            _redisOption = redisOption.Value;
             _database = connectionMultiplexer.GetDatabase();
         }
 
@@ -25,7 +30,9 @@ namespace Cache.Redis.Data.Repository
         {
             _logger.LogInformation($"Entering {nameof(StringSetAsync)}");
 
-            return await _database.StringSetAsync(customer.Key.ToString(), customer.Name).ConfigureAwait(false);
+            return await _database
+                .StringSetAsync(customer.Key.ToString(), customer.Name, TimeSpan.FromSeconds(_redisOption.Expiry))
+                .ConfigureAwait(false);
         }
 
         public async Task<Customer> StringGetAsync(Guid key, CancellationToken cancellationToken)
@@ -43,7 +50,7 @@ namespace Cache.Redis.Data.Repository
 
             return await _database.KeyDeleteAsync(key.ToString()).ConfigureAwait(false);
         }
-        
+
         public async Task<TimeSpan?> KeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Entering {nameof(KeyTimeToLiveAsync)}");
