@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Cache.Redis.Api.ViewModels;
 using Cache.Redis.Domain.Models;
 using Cache.Redis.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +25,32 @@ namespace Cache.Redis.Api.Controllers
             _customerService = customerService;
         }
 
-        // GET api/<StringsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{key}")]
+        public async Task<IActionResult> Get(Guid key, CancellationToken cancellationToken)
         {
-            return "value";
+            _logger.LogInformation($"Entering {nameof(Get)}");
+
+            try
+            {
+                var customer = await _customerService.StringGetAsync(key, cancellationToken).ConfigureAwait(false);
+
+                var customerViewModel = new CustomerViewModel { Name = customer.Name };
+
+                return Ok(customerViewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Customer customer, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post(CustomerViewModel customerViewModel, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Entering {nameof(Post)}");
+
+            var customer = new Customer { Name = customerViewModel.Name };
 
             try
             {
@@ -49,16 +65,9 @@ namespace Cache.Redis.Api.Controllers
             }
         }
 
-        // PUT api/<StringsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<StringsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        //{
+        //}
     }
 }

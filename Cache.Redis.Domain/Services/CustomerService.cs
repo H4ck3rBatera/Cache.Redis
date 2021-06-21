@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Cache.Redis.Domain.Models;
 using Cache.Redis.Domain.Repository;
@@ -22,7 +23,14 @@ namespace Cache.Redis.Domain.Services
         {
             _logger.LogInformation($"Entering {nameof(StringSetAsync)}");
 
-            return await _customerRepository.StringSetAsync(customer, cancellationToken);
+            customer.Key = Guid.NewGuid();
+
+            return await _customerRepository.StringSetAsync(customer, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<Customer> StringGetAsync(Guid key, CancellationToken cancellationToken)
+        {
+            return await _customerRepository.StringGetAsync(key, cancellationToken).ConfigureAwait(false);
         }
     }
 }
