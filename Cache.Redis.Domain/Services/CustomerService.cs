@@ -13,7 +13,9 @@ namespace Cache.Redis.Domain.Services
         private readonly ILogger _logger;
         private readonly ICustomerRepository _customerRepository;
 
-        public CustomerService(ICustomerRepository customerRepository, ILogger<CustomerService> logger)
+        public CustomerService(
+            ICustomerRepository customerRepository,
+            ILogger<CustomerService> logger)
         {
             _customerRepository = customerRepository;
             _logger = logger;

@@ -18,7 +18,8 @@ namespace Cache.Redis.Data.Support.Extensions
             services.AddSingleton<IConnectionMultiplexer>(serviceProvider => ConnectionMultiplexer.Connect(connectionString.Value));
 
             services
-                .AddScoped<ICustomerRepository, CustomerRepository>();
+                .AddScoped<ICustomerRepository, CustomerRepository>()
+                .AddScoped<IAddressRepository, AddressRepository>();
 
             return services;
         }

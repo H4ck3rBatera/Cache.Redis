@@ -12,13 +12,13 @@ namespace Cache.Redis.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StringsController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly ICustomerService _customerService;
 
-        public StringsController(
-            ILogger<StringsController> logger,
+        public CustomerController(
+            ILogger<CustomerController> logger,
             ICustomerService customerService)
         {
             _logger = logger;

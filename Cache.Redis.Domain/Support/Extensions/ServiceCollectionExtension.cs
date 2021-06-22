@@ -10,7 +10,8 @@ namespace Cache.Redis.Domain.Support.Extensions
         public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddScoped<ICustomerService, CustomerService>();
+                .AddScoped<ICustomerService, CustomerService>()
+                .AddScoped<IAddressService, AddressService>();
 
             return services;
         }
