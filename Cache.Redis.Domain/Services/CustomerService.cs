@@ -36,19 +36,5 @@ namespace Cache.Redis.Domain.Services
 
             return await _customerRepository.StringGetAsync(key, cancellationToken).ConfigureAwait(false);
         }
-
-        public async Task<bool> KeyDeleteAsync(Guid key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Entering {nameof(KeyDeleteAsync)}");
-
-            return await _customerRepository.KeyDeleteAsync(key, cancellationToken).ConfigureAwait(false);
-        }
-
-        public async Task<TimeSpan?> KeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Entering {nameof(KeyTimeToLiveAsync)}");
-
-            return await _customerRepository.KeyTimeToLiveAsync(key, cancellationToken).ConfigureAwait(false);
-        }
     }
 }

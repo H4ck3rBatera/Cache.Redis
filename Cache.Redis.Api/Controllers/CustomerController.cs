@@ -46,25 +46,7 @@ namespace Cache.Redis.Api.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
-
-        [HttpGet("{key}/KeyTimeToLive")]
-        public async Task<IActionResult> GetKeyTimeToLiveAsync(Guid key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Entering {nameof(GetKeyTimeToLiveAsync)}");
-
-            try
-            {
-                var timeSpan = await _customerService.KeyTimeToLiveAsync(key, cancellationToken).ConfigureAwait(false);
-
-                return Ok(timeSpan);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-        }
-
+        
         [HttpPost]
         public async Task<IActionResult> PostAsync(CustomerViewModel customerViewModel, CancellationToken cancellationToken)
         {
@@ -75,24 +57,6 @@ namespace Cache.Redis.Api.Controllers
             try
             {
                 var result = await _customerService.StringSetAsync(customer, cancellationToken);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-        }
-
-        [HttpDelete("{key}")]
-        public async Task<IActionResult> DeleteAsync(Guid key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Entering {nameof(DeleteAsync)}");
-
-            try
-            {
-                var result = await _customerService.KeyDeleteAsync(key, cancellationToken);
 
                 return Ok(result);
             }

@@ -11,7 +11,8 @@ namespace Cache.Redis.Domain.Support.Extensions
         {
             services
                 .AddScoped<ICustomerService, CustomerService>()
-                .AddScoped<IAddressService, AddressService>();
+                .AddScoped<IAddressService, AddressService>()
+                .AddScoped<IGeneralService, GeneralService>();
 
             return services;
         }

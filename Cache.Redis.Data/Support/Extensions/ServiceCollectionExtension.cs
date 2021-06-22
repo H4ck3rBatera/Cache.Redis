@@ -19,7 +19,8 @@ namespace Cache.Redis.Data.Support.Extensions
 
             services
                 .AddScoped<ICustomerRepository, CustomerRepository>()
-                .AddScoped<IAddressRepository, AddressRepository>();
+                .AddScoped<IAddressRepository, AddressRepository>()
+                .AddScoped<IGeneralRepository, GeneralRepository>();
 
             return services;
         }
